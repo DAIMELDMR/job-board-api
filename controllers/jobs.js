@@ -11,6 +11,7 @@ const { handleValidateId, handleRecordExists } = require('../middleware/custom_e
 // GET api/jobs
 route.get('/', handleValidateId, (req, res, next) => {
     Job.find()
+        .populate('owner', 'email -_id')
         .then((jobs) => res.json(jobs))
         .catch(next)
 });
@@ -19,6 +20,7 @@ route.get('/', handleValidateId, (req, res, next) => {
 // GET api/jobs/5a7db6c74d55bc51bdf39793
 route.get('/:id', handleValidateId, (req, res, next) => {
     Job.findById(req.params.id)
+        .populate('owner')
         .then(handleRecordExists)
         .then((job) => { res.json(job) })
         .catch(next);
